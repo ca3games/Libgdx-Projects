@@ -7,6 +7,8 @@ public class Frame {
 	
 	public List <Hitbox> hitbox;
 	public float offset_x, offset_y;
+	public int cancel_level;
+	public float speed_x, speed_y;
 	
 	public Frame()
 	{
