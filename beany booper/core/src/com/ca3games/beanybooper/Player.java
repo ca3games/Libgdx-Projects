@@ -14,6 +14,7 @@ public class Player {
 	public int direction;
 	public Vector2 speed;
 	public float spd;
+	public Map mapita;
 	
 	public Player()
 	{
@@ -29,13 +30,26 @@ public class Player {
 	public void Update()
 	{
 		speed = new Vector2(0,0);
-		if (Gdx.input.isKeyPressed(Input.Keys.LEFT))  { direction = 4;  speed.x -= spd; }
-		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) { direction = 6; speed.x += spd; }
-		if (Gdx.input.isKeyPressed(Input.Keys.UP))  { direction = 8; speed.y += spd; }
-		if (Gdx.input.isKeyPressed(Input.Keys.DOWN))  { direction = 2; speed.y -= spd; }
+		if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Colision(rect.x-speed.x, rect.y))  { direction = 4;  speed.x -= spd; }
+		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && !Colision(rect.x+speed.x, rect.y)) { direction = 6; speed.x += spd; }
+		if (Gdx.input.isKeyPressed(Input.Keys.UP) && !Colision(rect.x, (rect.y+rect.height)+speed.y)
+				)  { direction = 8; speed.y += spd; }
+		if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && !Colision(rect.x, rect.y-speed.y))  { direction = 2; speed.y -= spd; }
 		
 		rect.x += speed.x;
 		rect.y += speed.y;
+	}
+	
+	boolean Colision(float f, float y)
+	{
+		for (Block i : mapita.mapita)
+		{
+			if (i.rect.contains(f, y))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public void Draw(SpriteBatch batch)
