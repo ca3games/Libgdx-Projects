@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Map {
@@ -25,19 +26,19 @@ public class Map {
 	
 	public void update()
 	{
-		if (empty)
+		if (empty && mapita.size() < 5)
 		{
-			int height = random.nextInt(150) + 32;
 			for (int x = 1; x < 5; x++)
 			{
+				int height = random.nextInt(150) + 32;
 				mapita.add(new Block(random.nextInt(Gdx.graphics.getWidth()), top + 400, 32, height));
 			}
 			
 			empty = false;
 		}
 		
-		for (Block i : mapita)
-		{
+		for (int j = 0; j < mapita.size(); j++) {
+			Block i = mapita.get(j);
 			if (i.rect.y > top && i.rect.y < top+1)
 			{
 				empty = true;
@@ -56,12 +57,31 @@ public class Map {
 			}
 			
 			i.rect.y -= 0.5;
+			
+			if (i.rect.y < -200)
+			{
+				mapita.remove(j);
+			}
 		}
 		
 	}
 	
+	public boolean Collides(float x, float y)
+	{
+		for (Block i : mapita)
+		{
+			if (i.rect.contains(x, y))
+			{
+				return true;
+			}
+		}
+			
+		return false;
+	}
+	
 	public void draw(ShapeRenderer shape)
 	{
+		shape.setColor(Color.GREEN);
 		for (Block i : mapita)
 		{
 			i.Draw(shape);

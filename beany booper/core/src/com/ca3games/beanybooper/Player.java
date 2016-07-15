@@ -1,9 +1,14 @@
 package com.ca3games.beanybooper;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -16,6 +21,8 @@ public class Player {
 	public float spd;
 	public Map mapita;
 	
+	public List<PlayerBullet> bullets;
+	
 	public Player()
 	{
 		direction = 8;
@@ -25,19 +32,44 @@ public class Player {
 		up = new Texture(Gdx.files.internal("up.png"));
 		down = new Texture(Gdx.files.internal("down.png"));
 		spd = 1;
+		
+		bullets = new ArrayList<PlayerBullet>();
 	}
 	
 	public void Update()
 	{
 		speed = new Vector2(0,0);
-		if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Colision(rect.x-speed.x, rect.y))  { direction = 4;  speed.x -= spd; }
-		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && !Colision(rect.x+speed.x, rect.y)) { direction = 6; speed.x += spd; }
+		if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Colision(rect.x-speed.x, rect.y) 
+				&& rect.x > 0
+				)  { direction = 4;  speed.x -= spd; }
+		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && !Colision(rect.x+speed.x, rect.y)
+				&& rect.x < Gdx.graphics.getWidth() - rect.width
+				) { direction = 6; speed.x += spd; }
 		if (Gdx.input.isKeyPressed(Input.Keys.UP) && !Colision(rect.x, (rect.y+rect.height)+speed.y)
+				&& rect.y < Gdx.graphics.getHeight() - rect.height
 				)  { direction = 8; speed.y += spd; }
-		if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && !Colision(rect.x, rect.y-speed.y))  { direction = 2; speed.y -= spd; }
+		if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && !Colision(rect.x, rect.y-speed.y)
+				&& rect.y > 0
+				)  { direction = 2; speed.y -= spd; }
 		
 		rect.x += speed.x;
 		rect.y += speed.y;
+		
+		if (bullets.size() < 3 && Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+		{
+			bullets.add(new PlayerBullet(direction, rect.x, rect.y));
+		}
+		
+		for (int j = 0; j < bullets.size(); j++) {
+			PlayerBullet i = bullets.get(j);
+			i.update();
+			
+			if (i.rect.x < -32 || i.rect.x > Gdx.graphics.getWidth() + 32 || 
+					i.rect.y < -32 || i.rect.y > Gdx.graphics.getHeight() + 32)
+			{
+				bullets.remove(j);
+			}
+		}
 	}
 	
 	boolean Colision(float f, float y)
@@ -50,6 +82,14 @@ public class Player {
 			}
 		}
 		return false;
+	}
+	
+	public void DrawShapes(ShapeRenderer shape)
+	{
+		for (PlayerBullet i : bullets)
+		{
+			i.Draw(shape);
+		}
 	}
 	
 	public void Draw(SpriteBatch batch)
