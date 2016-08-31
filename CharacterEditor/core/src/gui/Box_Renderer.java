@@ -86,6 +86,11 @@ public class Box_Renderer {
 			font.draw(batch, Integer.toString(y) + " Anim: " + hit.name_animation, x, Gdx.graphics.getHeight() - y*16);
 		}
 		
+			font.draw(batch, "Speed x: " + Float.toString(chara.character.animation.get(chara.animation_index).frame.get(chara.frame_index).speed_x)
+			+ " / Speed y : " + Float.toString(chara.character.animation.get(chara.animation_index).frame.get(chara.frame_index).speed_y),
+					Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight() - 40
+			);
+		
 			font.draw(batch, "Anim size " + Integer.toString(chara.character.animation.size()), x, Gdx.graphics.getHeight() - 16);
 		}
 		catch (IndexOutOfBoundsException e)

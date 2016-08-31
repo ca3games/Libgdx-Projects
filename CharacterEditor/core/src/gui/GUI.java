@@ -352,9 +352,34 @@ public class GUI {
         }
 		});
 		
+		final VisTextArea Speed_X = new VisTextArea("0");
+		Speed_X.setWidth(50);
+		Speed_X.setHeight(30);
+		Speed_X.setPosition(0, Gdx.graphics.getHeight()/2-30);
+		
+		final VisTextArea Speed_Y = new VisTextArea("0");
+		Speed_Y.setWidth(50);
+		Speed_Y.setHeight(30);
+		Speed_Y.setPosition(50, Gdx.graphics.getHeight()/2-30);
+		
+		VisTextButton SetSpeed = new VisTextButton("Set speed");
+		SetSpeed.setWidth(100);
+		SetSpeed.setHeight(30);
+		SetSpeed.setPosition(0, Gdx.graphics.getHeight()/2);
+		SetSpeed.addListener(new InputListener()
+		{
+			@Override
+			 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				character.SetSpeed(Integer.parseInt(Speed_X.getText()), Integer.parseInt(Speed_Y.getText()));
+				return true;
+        }
+		});
 		
 		
 		stage = new Stage();
+		stage.addActor(Speed_Y);
+		stage.addActor(SetSpeed);
+		stage.addActor(Speed_X);
 		stage.addActor(NameAnimButton);
 		stage.addActor(NameAnimText);
 		stage.addActor(UpAnim);

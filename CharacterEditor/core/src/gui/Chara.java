@@ -187,6 +187,19 @@ public class Chara {
 		}
 	}
 	
+	public void SetSpeed(int x, int y)
+	{
+		try
+		{
+		character.animation.get(animation_index).frame.get(frame_index).speed_x = x;
+		character.animation.get(animation_index).frame.get(frame_index).speed_y = y;
+		}
+		catch (IndexOutOfBoundsException e)
+		{
+			
+		}
+	}
+	
 	public void SetSize(int width, int height)
 	{
 		try
@@ -207,6 +220,7 @@ public class Chara {
 		{
 			if (frame_index < frames)
 			{
+				hitbox_index = 0;
 				frame_index++;
 			}
 		}
@@ -216,6 +230,7 @@ public class Chara {
 	{
 		if (frame_index > 0)
 		{
+			hitbox_index = 0;
 			frame_index--;
 		}
 	}
