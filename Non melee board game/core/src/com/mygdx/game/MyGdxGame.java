@@ -47,9 +47,16 @@ public class MyGdxGame extends ApplicationAdapter {
 		map.DrawTiles(shape);
 		shape.end();
 		
+		/*
+		shape.begin(ShapeType.Line);
+		map.Draw(shape);
+		shape.end();
+		
+		
 		batch.begin();
-		//map.DrawCellInfo(font, batch);
+		map.DrawCellInfo(font, batch);
 		batch.end();
+		*/
 		
 	}
 	

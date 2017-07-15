@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Map {
@@ -12,6 +13,7 @@ public class Map {
 	public Cell[][] map;
 	public Vector2 offset;
 	public int size;
+	Map_Generator generator;
 	
 	public Map(int cell_size, int w, int h, Vector2 o)
 	{
@@ -20,7 +22,7 @@ public class Map {
 		height = h;
 		size = cell_size;
 		
-		Map_Generator generator = new Map_Generator();
+		generator = new Map_Generator();
 		
 		map = generator.getNewMap(cell_size, width, height);
 		offset = o;
@@ -37,14 +39,21 @@ public class Map {
 				case EMPTY:
 					batch.setColor(Color.BLACK);
 					break;
-				case ROOM_START:
+				case RAMDON_WALK_START:
 					batch.setColor(Color.RED);
 					break;
 				default:
 					break;
 				}
 				batch.box(offset.x + map[x][y].rect.x, offset.y + map[x][y].rect.y, 0, size, size, 1);
+				
 			}
+		}
+		
+		batch.setColor(Color.BLUE);
+		for (Rectangle i : generator.TestQuadtree)
+		{
+			batch.box((i.x * size) + offset.x, (i.y * size) + offset.y, 0, i.width * size, i.height * size, 1);
 		}
 	}
 	
@@ -57,16 +66,20 @@ public class Map {
 				switch (map[x][y].cell_type)
 				{
 				case EMPTY:
-					shape.setColor(Color.GRAY);
+					shape.setColor(Color.BROWN);
 					break;
-				case ROOM_START:
-					shape.setColor(Color.RED);
+				case RAMDON_WALK_START:
+					shape.setColor(Color.ORANGE);
 					break;
 				case AIR:
 					shape.setColor(Color.WHITE);
 				case DIRT:
 					break;
 				case WALL:
+					shape.setColor(Color.GRAY);
+					break;
+				case ROOM_SEED:
+					shape.setColor(Color.RED);
 					break;
 				default:
 					break;

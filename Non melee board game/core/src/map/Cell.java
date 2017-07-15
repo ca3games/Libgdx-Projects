@@ -8,7 +8,7 @@ public class Cell {
 	public int room;
 	public enum Cell_type 
 	{
-		EMPTY, WALL, DIRT, ROOM_START, AIR
+		EMPTY, WALL, DIRT, RAMDON_WALK_START, AIR, ROOM_SEED
 		
 	}
 	public Cell_type cell_type;
